@@ -1,27 +1,23 @@
-const int rightSensorPin    = A0;
-const int leftSensorPin     = A1;
-const int rightGreenLEDPin  = 2;
-const int rightYellowLEDPin = 3;
-const int rightRedLEDPin    = 4;
-const int leftGreenLEDPin   = 5;
+// Wiring
+const int leftSensorPin     = A0;
+const int rightSensorPin    = A1;
+const int leftGreenLEDPin   = 7;
 const int leftYellowLEDPin  = 6;
-const int leftRedLEDPin     = 7;
+const int leftRedLEDPin     = 5;
+const int rightGreenLEDPin  = 4;
+const int rightYellowLEDPin = 3;
+const int rightRedLEDPin    = 2;
 
+// Misc. variables
 const int numSamples = 100;
 int leftSensorNomVal = 0;
 int rightSensorNomVal = 0;
 
-int getNominalSensorVal(int pin){
-  long nomSensorVal = 0;
-  
-  for(int i = 0; i < numSamples; i++){
-    nomSensorVal += analogRead(pin);
-    delay(1);
-  }
-  nomSensorVal /= numSamples;
-
-  return static_cast<int>(nomSensorVal);
-}
+// Function declarations
+int getNominalSensorVal(int pin);
+void enableGreenLEDs(int leftGreenValue, int rightGreenValue);
+void enableYellowLEDs(int leftYellowValue, int rightYellowValue);
+void enableRedLEDs(int leftRedValue, int rightRedValue);
 
 void setup() {
   Serial.begin(9600);
@@ -31,9 +27,16 @@ void setup() {
   rightSensorNomVal = getNominalSensorVal(rightSensorPin);
   Serial.print("Left sensor nominal value: "); Serial.println(leftSensorNomVal);
   Serial.print("Right sensor nominal value: "); Serial.println(rightSensorNomVal);
+  delay(1000);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  int leftSensorVal = analogRead(leftSensorPin);
+  int rightSensorVal = analogRead(rightSensorPin);
+
+  Serial.print("Left Sensor: "); Serial.print(leftSensorVal);
+  Serial.print("Right Sensor: "); Serial.println(rightSensorVal);
+  
+  delay(500);
 
 }
