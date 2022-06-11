@@ -15,11 +15,19 @@ int rightSensorNomVal = 0;
 
 // Function declarations
 int getNominalSensorVal(int pin);
-void enableGreenLEDs(int leftGreenValue, int rightGreenValue);
-void enableYellowLEDs(int leftYellowValue, int rightYellowValue);
-void enableRedLEDs(int leftRedValue, int rightRedValue);
+void enableLEDs(int blockState);
+
+enum blockState{
+  green_green,
+  green_yellow,
+  yellow_green,
+  yellow_yellow,
+  red_red
+}currentState;
 
 void setup() {
+  currentState = green_green;
+  
   Serial.begin(9600);
   while(!Serial){ }
 
@@ -34,9 +42,31 @@ void loop() {
   int leftSensorVal = analogRead(leftSensorPin);
   int rightSensorVal = analogRead(rightSensorPin);
 
-  Serial.print("Left Sensor: "); Serial.print(leftSensorVal);
-  Serial.print("Right Sensor: "); Serial.println(rightSensorVal);
+  Serial.print("Left sensor: "); Serial.print(leftSensorVal); Serial.print(", Right sensor: "); Serial.print(rightSensorVal);
+  Serial.print(", Current state: "); Serial.println(currentState);
+
+  enableLEDs(currentState);
+
+  switch(currentState){
+    case green_green:
+      //
+      break;
+    case green_yellow:
+      //
+      break;
+    case yellow_green:
+      //
+      break;
+    case yellow_yellow:
+      //
+      break;
+    case red_red:
+      //
+      break;
+    default:
+      //
+      break;
+  }
   
   delay(500);
-
 }
