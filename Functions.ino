@@ -11,6 +11,18 @@ int getNominalSensorVal(int pin){
   return static_cast<int>(nomSensorVal);
 }
 
+bool sensorDetect(int pin, int nomVal){
+  return ((nomVal - analogRead(pin)) > senseThreshold);
+}
+
+bool blockDetect(int pin){
+  if(digitalRead(pin) == HIGH){
+    return true;
+  }else{
+    return false;
+  }
+}
+
 void enableLEDs(int state){
   
   switch(state){
@@ -46,4 +58,41 @@ void enableLEDs(int state){
       digitalWrite(leftRedLEDPin, HIGH);    digitalWrite(rightRedLEDPin, HIGH);
       break;
   }
+}
+
+void enableTX(int state){
+  switch(state){
+    case green_green:
+      digitalWrite(leftBlockTXPin, LOW);
+      digitalWrite(rightBlockTXPin, LOW);
+      break;
+    case green_yellow:
+      digitalWrite(leftBlockTXPin, LOW);
+      digitalWrite(rightBlockTXPin, LOW);
+      break;
+    case yellow_green:
+      digitalWrite(leftBlockTXPin, LOW);
+      digitalWrite(rightBlockTXPin, LOW);
+      break;
+    case yellow_yellow:
+      //digitalWrite(leftBlockTXPin, LOW);
+      //digitalWrite(rightBlockTXPin, LOW);
+      break;
+    case red_red:
+      digitalWrite(leftBlockTXPin, HIGH);
+      digitalWrite(rightBlockTXPin, HIGH);
+      break;
+    default:
+      digitalWrite(leftBlockTXPin, HIGH);
+      digitalWrite(rightBlockTXPin, HIGH);
+      break;
+  }
+}
+
+void signalGreenGreen(bool leftBlock, bool rightBlock, bool leftSensor, bool rightSensor){
+  if(leftBlock && !rightBlock && !leftSensor && !rightSensor){
+    currentState = green_yellow;
+  }else if(!leftBlock && rightBlock && !leftSensor && !rightSensor){
+    currentState = yellow_green;
+  }//else if(leftBlock && 
 }
