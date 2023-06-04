@@ -72,7 +72,7 @@ void loop() {
   bool leftBlockOccupied = isBlockOccupied(leftBlockRXPin);
   bool rightBlockOccupied = isBlockOccupied(rightBlockRXPin);
 
-  const char* stateStr[] = {"GG", "YG", "GY", "YY", "RR"};
+  const char* stateStr[] = {"GG", "GY", "YG", "YY", "RR"};
   unsigned long currentMillis = millis();
 
   //Serial.print("Left sensor: "); Serial.print(leftSensorTriggered); Serial.print("\t Right sensor: "); Serial.print(rightSensorTriggered); 
