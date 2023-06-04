@@ -2,23 +2,30 @@
 const int rightSensorPin	  = A0;
 const int leftSensorPin 	  = A5;
 
-const int leftGreenLEDPin   = 4;
-const int leftYellowLEDPin  = 3;
-const int leftRedLEDPin     = 2;
-const int rightGreenLEDPin  = 11;
-const int rightYellowLEDPin = 12;
-const int rightRedLEDPin    = 13;
+const int leftBlockRXPin    = 3;
+const int leftBlockTXPin    = 2;
+const int rightBlockRXPin   = 12;
+const int rightBlockTXPin   = 13;
+
+const int leftGreenLEDPin   = 7;
+const int leftYellowLEDPin  = 6;
+const int leftRedLEDPin     = 5;
+const int rightGreenLEDPin  = 8;
+const int rightYellowLEDPin = 9;
+const int rightRedLEDPin    = 10;
 
 // Misc. variables
-const int numSamples = 100;
-const int senseThreshold = 250;
-int leftSensorNomVal = 0;
-int rightSensorNomVal = 0;
+const int numSamples        = 100;
+const int senseThreshold    = 250;
+int leftSensorNomVal        = 0;
+int rightSensorNomVal       = 0;
+bool entryFromLeft          = false;
+bool needExitingCheck       = false;
 
 enum signalState{
   stateGreenGreen,
-  stateYellowGreen,
   stateGreenYellow,
+  stateYellowGreen,
   stateYellowYellow,
   stateRedRed,
 }currentState;
@@ -60,18 +67,28 @@ void loop() {
   bool leftSensorTriggered = isSensorTriggered(leftSensorPin, leftSensorNomVal);
   bool rightSensorTriggered = isSensorTriggered(rightSensorPin, rightSensorNomVal);
 
-  Serial.print("Left sensor: "); Serial.print(leftSensorTriggered); Serial.print(", Right sensor: "); Serial.print(rightSensorTriggered); Serial.print("Current state: "); Serial.println(currentState);
+  bool leftBlockOccupied = isBlockOccupied(leftBlockRXPin);
+  bool rightBlockOccupied = isBlockOccupied(rightBlockRXPin);
+
+  const char* stateStr[] = {"GG", "YG", "GY", "YY", "RR"};
+
+  Serial.print("Left sensor: "); Serial.print(leftSensorTriggered); Serial.print(", Right sensor: "); Serial.print(rightSensorTriggered); 
+  Serial.print(", Left block: "); Serial.print(leftBlockOccupied); Serial.print(", Right block: "); Serial.print(rightBlockOccupied);
+  Serial.print(", Current state: "); Serial.println(stateStr[currentState]);
   //Serial.print("Left sensor detect: "); Serial.print(leftSensorDetect ? "TRUE" : "FALSE"); Serial.print(", Right sensor detect: "); Serial.println(rightSensorDetect ? "TRUE" : "FALSE");
+
+  enableLEDs(currentState);
 
   switch(currentState){
     case stateGreenGreen:
-    signalGreenGreen();
-    break;
-
-    case stateYellowGreen:
+      signalGreenGreen(leftSensorTriggered, rightSensorTriggered, leftBlockOccupied, rightBlockOccupied);
     break;
 
     case stateGreenYellow:
+      signalGreenYellow(leftSensorTriggered, rightSensorTriggered, leftBlockOccupied, rightBlockOccupied);
+    break;
+
+    case stateYellowGreen:
     break;
 
     case stateYellowYellow:
@@ -80,9 +97,6 @@ void loop() {
     case stateRedRed:
     break;
   }
-
-  enableLEDs(currentState);
-
   delay(500);
 }
 
