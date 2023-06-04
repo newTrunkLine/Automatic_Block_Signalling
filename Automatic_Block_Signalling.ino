@@ -44,6 +44,11 @@ void setup() {
   pinMode(rightYellowLEDPin, OUTPUT);
   pinMode(rightRedLEDPin, OUTPUT);
 
+  pinMode(leftBlockRXPin, INPUT);
+  pinMode(leftBlockTXPin, OUTPUT);
+  pinMode(rightBlockRXPin, INPUT);
+  pinMode(rightBlockTXPin, OUTPUT);
+
   currentState = stateGreenGreen;
 
   leftSensorNomVal = getNominalSensorVal(leftSensorPin);
@@ -83,7 +88,6 @@ void loop() {
 
   enableLEDs(currentState);
   enableTX(currentState);
-
 
   switch(currentState){
     case stateGreenGreen:
