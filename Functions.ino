@@ -34,8 +34,8 @@ void enableTX(int state){
   	digitalWrite(rightBlockTXPin, LOW);
   	break;
 	case stateYellowGreen:	
-  	//digitalWrite(leftBlockTXPin, LOW);
-  	//digitalWrite(rightBlockTXPin, LOW);
+  	digitalWrite(leftBlockTXPin, LOW);
+  	digitalWrite(rightBlockTXPin, LOW);
   	break;
 	case stateYellowYellow:
   	//digitalWrite(leftBlockTXPin, LOW);
@@ -107,8 +107,6 @@ void signalGreenGreen(bool leftSensorTrig, bool rightSensorTrig, bool leftBlockO
     currentState = stateGreenYellow;
   }else if(rightBlockOcc && !leftBlockOcc){
     currentState = stateYellowGreen;
-  }else{
-    Serial.println("Error! Unknown inputs for state GG");
   }
 }
 
@@ -126,8 +124,23 @@ void signalGreenYellow(bool leftSensorTrig, bool rightSensorTrig, bool leftBlock
     currentState = stateYellowGreen;
   }else if(!leftBlockOcc && !rightBlockOcc){
     currentState = stateGreenGreen;
-  }else{
-    Serial.println("Error! Unknown inputs for state GY");
+  }
+}
+
+void signalYellowGreen(bool leftSensorTrig, bool rightSensorTrig, bool leftBlockOcc, bool rightBlockOcc){
+  if(leftSensorTrig){
+    entryFromLeft = true;
+    currentState = stateRedRed;
+  }else if(rightSensorTrig){
+    entryFromLeft = false;
+    currentState = stateRedRed;
+  }else if(leftBlockOcc && rightBlockOcc){
+    needExitingCheck = false;
+    currentState = stateYellowYellow;
+  }else if(leftBlockOcc && !rightBlockOcc){
+    currentState = stateGreenYellow;
+  }else if(!leftBlockOcc && !rightBlockOcc){
+    currentState = stateGreenGreen;
   }
 }
 

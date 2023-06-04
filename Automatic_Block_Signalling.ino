@@ -89,6 +89,7 @@ void loop() {
     break;
 
     case stateYellowGreen:
+      signalYellowGreen(leftSensorTriggered, rightSensorTriggered, leftBlockOccupied, rightBlockOccupied);
     break;
 
     case stateYellowYellow:
