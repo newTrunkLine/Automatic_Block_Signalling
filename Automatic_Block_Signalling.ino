@@ -81,7 +81,7 @@ void loop() {
   unsigned long currentMillis = millis();
 
   //Serial.print("Left sensor: "); Serial.print(leftSensorTriggered); Serial.print("\t Right sensor: "); Serial.print(rightSensorTriggered); 
-  //Serial.print("\t Left block: "); Serial.print(leftBlockOccupied); Serial.print("\t Right block: "); Serial.print(rightBlockOccupied);
+  Serial.print("\t Left block: "); Serial.print(leftBlockOccupied); Serial.print("\t Right block: "); Serial.print(rightBlockOccupied);
   Serial.print("\t Current state: "); Serial.print(stateStr[currentState]);
   Serial.print("\t Current millis: "); Serial.print(currentMillis); Serial.print("\t Yellow start millis: "); Serial.print(yellowStartMillis);
   Serial.print("\t Diff: "); Serial.println(currentMillis - yellowStartMillis);

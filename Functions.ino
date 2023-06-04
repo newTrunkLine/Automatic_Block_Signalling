@@ -174,8 +174,17 @@ void signalYellowYellow(bool leftSensorTrig, bool rightSensorTrig, bool leftBloc
       }
     }else{
       if(!leftSensorTrig && !rightSensorTrig){
-        // If after 5 seconds neither sensor is triggered, return to GG state
-        currentState = stateGreenGreen;
+        // If after 5 seconds neither sensor is triggered AND adjacent blocks are clear, return to GG state
+        if(leftBlockOcc && rightBlockOcc){
+          needExitingCheck = false;
+          currentState = stateYellowYellow;
+        }else if(leftBlockOcc && !rightBlockOcc){
+          currentState = stateGreenYellow;
+        }else if(rightBlockOcc && !leftBlockOcc){
+          currentState = stateYellowGreen;
+        }else{
+          currentState = stateGreenGreen;
+          }
       } 
     }
   }
