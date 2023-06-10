@@ -24,6 +24,20 @@ unsigned long yellowStartMillis = 0;
 bool entryFromLeft              = false;
 bool needExitingCheck           = false;
 
+// Forward declarations
+int getNominalSensorVal(int pin);
+bool isSensorTriggered(int pin, int nomVal);
+bool isBlockOccupied(int pin);
+void enableTX(int state);
+void enableLEDs(int state);
+void signalGreenGreen(bool leftSensorTrig, bool rightSensorTrig, bool leftBlockOcc, bool rightBlockOcc);
+void signalGreenYellow(bool leftSensorTrig, bool rightSensorTrig, bool leftBlockOcc, bool rightBlockOcc);
+void signalYellowGreen(bool leftSensorTrig, bool rightSensorTrig, bool leftBlockOcc, bool rightBlockOcc);
+void signalYellowYellow(bool leftSensorTrig, bool rightSensorTrig, bool leftBlockOcc, bool rightBlockOcc, unsigned long currentMillis);
+void signalRedRed(bool leftSensorTrig, bool rightSensorTrig, bool leftBlockOcc, bool rightBlockOcc);
+int getSensorRawVal(int pin);
+int getSensorVal(int pin, int nomVal);
+
 enum signalState{
   stateGreenGreen,
   stateGreenYellow,
