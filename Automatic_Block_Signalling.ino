@@ -1,3 +1,5 @@
+// #define DEBUG
+
 // Wiring
 const int rightSensorPin	      = A0;
 const int leftSensorPin 	      = A5;
@@ -74,16 +76,16 @@ void setup() {
 }
 
 void loop() {
-  /*
+  #ifdef DEBUG
   int leftRaw = getSensorRawVal(leftSensorPin);
   int rightRaw = getSensorRawVal(rightSensorPin);
   
   int leftSensorVal = getSensorVal(leftSensorPin, leftSensorNomVal);
   int rightSensorVal = getSensorVal(rightSensorPin, rightSensorNomVal);
   
-  //Serial.print("Left raw: "); Serial.print(leftRaw); Serial.print(", Right raw: "); Serial.print(rightRaw); 
-  Serial.print(", Left: "); Serial.print(leftSensorVal); Serial.print(", Right: "); Serial.print(rightSensorVal);
-  */
+  Serial.print("Left raw: "); Serial.print(leftRaw); Serial.print("\t Right raw: "); Serial.print(rightRaw); 
+  Serial.print("\t Left: "); Serial.print(leftSensorVal); Serial.print("\t Right: "); Serial.print(rightSensorVal);
+  #endif
 
   bool leftSensorTriggered = isSensorTriggered(leftSensorPin, leftSensorNomVal);
   bool rightSensorTriggered = isSensorTriggered(rightSensorPin, rightSensorNomVal);
@@ -94,8 +96,8 @@ void loop() {
   const char* stateStr[] = {"GG", "GY", "YG", "YY", "RR"};
   unsigned long currentMillis = millis();
 
-  //Serial.print("Left sensor: "); Serial.print(leftSensorTriggered); Serial.print("\t Right sensor: "); Serial.print(rightSensorTriggered); 
-  Serial.print("\t Left block: "); Serial.print(leftBlockOccupied); Serial.print("\t Right block: "); Serial.print(rightBlockOccupied);
+  //Serial.print("Left sensor: "); Serial.print(leftSensorTriggered); Serial.print("\t Right sensor: "); Serial.print(rightSensorTriggered); Serial.print("\t");
+  Serial.print("Left block: "); Serial.print(leftBlockOccupied); Serial.print("\t Right block: "); Serial.print(rightBlockOccupied);
   Serial.print("\t Current state: "); Serial.print(stateStr[currentState]);
   Serial.print("\t Current millis: "); Serial.print(currentMillis); Serial.print("\t Yellow start millis: "); Serial.print(yellowStartMillis);
   Serial.print("\t Diff: "); Serial.println(currentMillis - yellowStartMillis);
