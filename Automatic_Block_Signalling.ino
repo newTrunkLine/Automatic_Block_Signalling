@@ -1,4 +1,4 @@
-// #define DEBUG
+#define DEBUG
 
 // Wiring
 const int rightSensorPin	      = A0;
@@ -17,9 +17,9 @@ const int rightYellowLEDPin     = 9;
 const int rightRedLEDPin        = 10;
 
 // Misc. variables
-const int numSamples            = 100;
-const int senseThreshold        = 250;
-const int yellowInterval        = 5000;
+const int numSamples            = 1000;
+const int senseThreshold        = 400;
+const int yellowInterval        = 1500;
 int leftSensorNomVal            = 0;
 int rightSensorNomVal           = 0;
 unsigned long yellowStartMillis = 0;
@@ -53,6 +53,8 @@ void setup() {
   Serial.begin(9600);
   while(!Serial){ }
 
+  Serial.println();
+
   pinMode(leftGreenLEDPin, OUTPUT);
   pinMode(leftYellowLEDPin, OUTPUT);
   pinMode(leftRedLEDPin, OUTPUT);
@@ -72,6 +74,7 @@ void setup() {
 
   Serial.print("Left sensor nominal value: "); Serial.println(leftSensorNomVal);
   Serial.print("Right sensor nominal value: "); Serial.println(rightSensorNomVal);
+  Serial.println();
   delay(1000);
 }
 
@@ -84,7 +87,7 @@ void loop() {
   int rightSensorVal = getSensorVal(rightSensorPin, rightSensorNomVal);
   
   Serial.print("Left raw: "); Serial.print(leftRaw); Serial.print("\t Right raw: "); Serial.print(rightRaw); 
-  Serial.print("\t Left: "); Serial.print(leftSensorVal); Serial.print("\t Right: "); Serial.print(rightSensorVal);
+  Serial.print("\t Left: "); Serial.print(leftSensorVal); Serial.print("\t Right: "); Serial.print(rightSensorVal); Serial.print("\t");
   #endif
 
   bool leftSensorTriggered = isSensorTriggered(leftSensorPin, leftSensorNomVal);
