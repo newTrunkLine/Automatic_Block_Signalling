@@ -40,6 +40,7 @@ void signalRedRed(bool leftSensorTrig, bool rightSensorTrig, bool leftBlockOcc, 
 int getSensorRawVal(int pin);
 int getSensorVal(int pin, int nomVal);
 
+// All possible signal states
 enum signalState{
   stateGreenGreen,
   stateGreenYellow,
@@ -50,11 +51,13 @@ enum signalState{
 
 void setup() {
   
+  // Start serial, hold program until it actually starts
   Serial.begin(9600);
   while(!Serial){ }
 
   Serial.println();
 
+  // Configure pins
   pinMode(leftGreenLEDPin, OUTPUT);
   pinMode(leftYellowLEDPin, OUTPUT);
   pinMode(leftRedLEDPin, OUTPUT);
@@ -67,8 +70,10 @@ void setup() {
   pinMode(rightBlockRXPin, INPUT);
   pinMode(rightBlockTXPin, OUTPUT);
 
+  // Set initial state
   currentState = stateGreenGreen;
 
+  // Get nominal sensor readings when untriggered
   leftSensorNomVal = getNominalSensorVal(leftSensorPin);
   rightSensorNomVal = getNominalSensorVal(rightSensorPin);
 
@@ -79,6 +84,8 @@ void setup() {
 }
 
 void loop() {
+
+  // If in debug mode, calculate raw sensor values and print them
   #ifdef DEBUG
   int leftRaw = getSensorRawVal(leftSensorPin);
   int rightRaw = getSensorRawVal(rightSensorPin);
@@ -90,12 +97,15 @@ void loop() {
   Serial.print("\t Left: "); Serial.print(leftSensorVal); Serial.print("\t Right: "); Serial.print(rightSensorVal); Serial.print("\t");
   #endif
 
+  // Get status of sensors
   bool leftSensorTriggered = isSensorTriggered(leftSensorPin, leftSensorNomVal);
   bool rightSensorTriggered = isSensorTriggered(rightSensorPin, rightSensorNomVal);
 
+  // Get status of adjacent blocks
   bool leftBlockOccupied = isBlockOccupied(leftBlockRXPin);
   bool rightBlockOccupied = isBlockOccupied(rightBlockRXPin);
 
+  // Print current system state and variables, also count time for state YY conditions
   const char* stateStr[] = {"GG", "GY", "YG", "YY", "RR"};
   unsigned long currentMillis = millis();
 
@@ -105,9 +115,11 @@ void loop() {
   Serial.print("\t Current millis: "); Serial.print(currentMillis); Serial.print("\t Yellow start millis: "); Serial.print(yellowStartMillis);
   Serial.print("\t Diff: "); Serial.println(currentMillis - yellowStartMillis);
 
+  // Turn on relevant LEDs and comms to adjacent blocks
   enableLEDs(currentState);
   enableTX(currentState);
 
+  // Switch to relevant state
   switch(currentState){
     case stateGreenGreen:
       signalGreenGreen(leftSensorTriggered, rightSensorTriggered, leftBlockOccupied, rightBlockOccupied);
