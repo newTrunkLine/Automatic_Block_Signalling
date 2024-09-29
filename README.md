@@ -1,3 +1,3 @@
 # Automatic Block Signalling
  
-Please see: https://sites.google.com/view/newtrunkline/project-pages/automatic-block-signalling
+Please see: https://teito7000.github.io/projects/2023/automatic_block_signalling.html
